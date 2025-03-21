@@ -1,0 +1,7 @@
+server:
+  port: 8080
+
+logging:
+  file:
+    name: C:/Users/Monocept/Desktop/logs/elk-stack.log
+
