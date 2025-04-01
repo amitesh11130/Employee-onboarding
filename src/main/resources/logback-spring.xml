@@ -3,6 +3,8 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %-5level %logger{36} %msg%n</pattern>
+<!--            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %5p [%t] %c{1} - %m%n</pattern>-->
+
         </encoder>
     </appender>
 
@@ -11,6 +13,8 @@
         <file>C:/Users/Monocept/Desktop/logs/elk-stack.log</file>
         <encoder>
             <pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %-5level %logger{36}  %msg%n</pattern>
+<!--            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %5p [%t] %c{1} - %m%n</pattern>-->
+
         </encoder>
     </appender>
 

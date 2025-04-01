@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,10 @@ public class EmployeeDAO {
     public List<Employee> findAll() {
         log.info("Received request from Employee_Service to retrieve all employees.");
         List<Employee> employees = employeeRepository.findAll();
+        if (ObjectUtils.isEmpty(employees)) {
+            log.warn("Request response from data base employee not found.");
+            return employees;
+        }
         log.info("Successfully retrieved {} employees.", employees.size());
         return employees;
     }

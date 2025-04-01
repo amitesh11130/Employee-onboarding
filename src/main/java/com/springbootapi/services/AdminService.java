@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -65,7 +66,7 @@ public class AdminService {
             log.info("Successfully retrieved admin with ID: {}", admin.getId());
             return admin;
         }
-        log.warn("Admin not found with ID: {}", id);
+        log.warn("Admin not found with ID: {} ", id);
         throw new AdminNotFoundException("Admin not found with given id !! " + id);
     }
 
@@ -91,14 +92,19 @@ public class AdminService {
 
     public Admin updateAdmin(Integer id, AdminDTO adminDTO) {
         log.info("Request received from Controller to update admin with ID: {}", id);
-        Admin admin = adminRepository.findById(id).get();
-        admin.setAdminName(adminDTO.getAdminName());
-        admin.setPassword(adminDTO.getPassword());
-        admin.setRole(adminDTO.getRole());
-        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
-        Admin updatedAdmin = adminRepository.save(admin);
-        maskPassword(List.of(updatedAdmin));
-        log.info("Successfully updated admin with ID: {}", updatedAdmin.getId());
-        return updatedAdmin;
+        Optional<Admin> byId = adminRepository.findById(id);
+        if (byId.isPresent()) {
+            byId.get().setAdminName(adminDTO.getAdminName());
+            byId.get().setPassword(adminDTO.getPassword());
+            byId.get().setRole(adminDTO.getRole());
+            byId.get().setPassword(passwordEncoder.encode(byId.get().getPassword()));
+            Admin updatedAdmin = adminRepository.save(byId.get());
+            maskPassword(List.of(updatedAdmin));
+            log.info("Successfully updated admin with ID: {}", updatedAdmin.getId());
+            return updatedAdmin;
+        }
+        log.warn("Failed to update admin because admin not found with ID: {}", id);
+        return null;
     }
+
 }

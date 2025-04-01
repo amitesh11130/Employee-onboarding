@@ -31,7 +31,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint,
 
         if (authException instanceof BadCredentialsException) {
             errorMessage = "Invalid admin name or password";
-        } else if (authException instanceof DisabledException ) {
+        } else if (authException instanceof DisabledException) {
             errorMessage = "Account is disabled";
         } else if (authException instanceof LockedException) {
             errorMessage = "Account is locked";

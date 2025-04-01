@@ -8,6 +8,7 @@ import com.springbootapi.request.EmployeeDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -36,6 +37,10 @@ public class EmployeeService {
     public List<Employee> getAllEmployee() {
         log.info("Request received from Controller to retrieve all employee");
         List<Employee> employeeList = employeeDAO.findAll();
+        if (ObjectUtils.isEmpty(employeeList)) {
+            log.warn("Request response from EmployeeDAO No employee found in the database");
+            return employeeList;
+        }
         log.info("Successfully retrieve {} employee", employeeList.size());
         return employeeList;
     }

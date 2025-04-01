@@ -41,9 +41,10 @@ public class ApiHttpSecurityConfig {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) ->
                         auth
-                                .requestMatchers("/api/v1/admin/save", "/api/v1/admin/saveAll", "/api/v1/admin/delete","/api/v1/admin/updateAdmin/**")
+                                .requestMatchers("/api/v1/employee/getAll").permitAll()
+                                .requestMatchers("/api/v1/admin/save", "/api/v1/admin/saveAll", "/api/v1/admin/delete", "/api/v1/admin/updateAdmin/**")
                                 .hasRole(Role.ADMIN.name())
-                                .requestMatchers("/api/v1/admin/getAll", "/api/v1/admin/getById")
+                                .requestMatchers("/api/v1/admin/getAll", "/api/v1/admin/getById,/api/v1/employee/**")
                                 .hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                                 .anyRequest().authenticated())
 

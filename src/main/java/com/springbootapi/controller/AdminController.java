@@ -28,7 +28,7 @@ public class AdminController {
 
     @PostMapping(value = "/save")
     public ResponseEntity<ResponseDTO> saveAdmin(@Valid @RequestBody AdminDTO adminDTO) {
-        log.info("Received request to save a new admin");
+        log.info("Received request to save a new admin ");
         Admin savedAdmin = adminService.saveAdmin(adminDTO);
         log.info("Successfully saved admin with ID: {}", savedAdmin.getId());
         return ResponseUtil.created("Admin created successfully", savedAdmin);
@@ -76,6 +76,10 @@ public class AdminController {
             return ResponseUtil.error("Invalid ID provided");
         }
         Admin updatedAdmin = adminService.updateAdmin(id, adminDTO);
+        if (updatedAdmin == null) {
+            log.warn("No admins found to update with given ID: {}", id);
+            return ResponseUtil.failed("No admins found to update");
+        }
         log.info("Successfully update admin with ID: {}", updatedAdmin.getId());
         return ResponseUtil.updated("Admin updated successfully", updatedAdmin);
 

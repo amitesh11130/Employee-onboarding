@@ -5,7 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableJpaRepositories
-public interface AdminRepository extends JpaRepository<Admin,Integer> {
+public interface AdminRepository extends JpaRepository<Admin, Integer> {
 
     Admin findByAdminName(String adminName);
+
 }
