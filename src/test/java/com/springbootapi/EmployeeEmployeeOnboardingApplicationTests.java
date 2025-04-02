@@ -14,6 +14,7 @@ class EmployeeEmployeeOnboardingApplicationTests {
 	void contextLoads() {
 		log.info("Test case executing..");
 		assertEquals(true,true);
+		log.info("Test case executing complete");
 	}
 
 
