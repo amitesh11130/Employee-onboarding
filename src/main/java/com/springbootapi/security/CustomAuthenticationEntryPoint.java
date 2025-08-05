@@ -17,11 +17,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
 @Component
+@EnableWebMvc
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint, AccessDeniedHandler {
 
     @Override

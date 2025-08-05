@@ -1,12 +1,12 @@
 package com.springbootapi.services;
 
 import com.springbootapi.entity.Admin;
-import com.springbootapi.execption.AdminNotFoundException;
+import com.springbootapi.exception.AdminNotFoundException;
 import com.springbootapi.repository.DTOConvertor;
 import com.springbootapi.repository.AdminRepository;
 import com.springbootapi.request.AdminDTO;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,17 +18,22 @@ import java.util.Optional;
 @Service
 public class AdminService {
 
-    @Autowired
-    private AdminRepository adminRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final AdminRepository adminRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public AdminService(AdminRepository adminRepository, PasswordEncoder passwordEncoder) {
+        this.adminRepository = adminRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
 
     public Admin saveAdmin(AdminDTO adminDTO) {
         log.info("Request received from Controller to save a new admin: {}", adminDTO);
         Admin admin = DTOConvertor.convertUserAccessDTO(adminDTO);
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         Admin savedAdmin = adminRepository.save(admin);
+
         maskPassword(List.of(savedAdmin));
         log.info("Successfully saved admin with ID: {}", savedAdmin.getId());
         return savedAdmin;
@@ -57,29 +62,37 @@ public class AdminService {
         return admins;
     }
 
-    public Admin getAdminById(Integer id) throws AdminNotFoundException {
+    public Admin getAdminById(Integer id) {
         log.info("Request received from Controller to retrieve admin with ID: {}", id);
-        boolean existsById = adminRepository.existsById(id);
-        if (existsById) {
-            Admin admin = adminRepository.findById(id).get();
+        Optional<Admin> adminById = adminRepository.findById(id);
+        if (adminById.isPresent()) {
+            Admin admin = adminById.get();
             maskPassword(List.of(admin));
             log.info("Successfully retrieved admin with ID: {}", admin.getId());
             return admin;
         }
-        log.warn("Admin not found with ID: {} ", id);
-        throw new AdminNotFoundException("Admin not found with given id !! " + id);
+        try {
+            log.warn("Admin not found to retrieve admin with ID: {} ", id);
+            throw new AdminNotFoundException("Admin not found with given id !! " + id);
+        } catch (AdminNotFoundException e) {
+            return null;
+        }
     }
 
-    public void deleteAdminById(Integer id) throws AdminNotFoundException {
+    public boolean deleteAdminById(Integer id) {
         log.info("Request received from Controller to delete admin with ID: {}", id);
         boolean existsById = adminRepository.existsById(id);
         if (existsById) {
             adminRepository.deleteById(id);
             log.info("Successfully delete admin with ID: {}", id);
-            return;
+            return true;
         }
         log.warn("Admin not found with ID: {}", id);
-        throw new AdminNotFoundException("Admin not found with given id !! " + id);
+        try {
+            throw new AdminNotFoundException("Admin not found with given id !! " + id);
+        } catch (AdminNotFoundException e) {
+            return false;
+        }
     }
 
     public void maskPassword(List<Admin> adminList) {
@@ -107,4 +120,8 @@ public class AdminService {
         return null;
     }
 
+    public Admin findByAdminName(@NotEmpty(message = "Name is required") String adminName) {
+        log.info("Request received from Controller to find admin present or not With NAME: {}", adminName);
+        return adminRepository.findByAdminName(adminName);
+    }
 }

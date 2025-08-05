@@ -1,4 +1,4 @@
-package com.springbootapi.execption;
+package com.springbootapi.exception;
 
 public class AdminNotFoundException extends Exception {
 

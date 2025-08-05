@@ -1,25 +1,26 @@
 <configuration>
-    <!-- Console Appender -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %-5level %logger{36} %msg%n</pattern>
-<!--            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %5p [%t] %c{1} - %m%n</pattern>-->
-
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %5p [%t] %c{1} - %m%n</pattern>
         </encoder>
     </appender>
 
-    <!-- File Appender -->
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>C:/Users/Monocept/Desktop/logs/elk-stack.log</file>
-        <encoder>
-            <pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %-5level %logger{36}  %msg%n</pattern>
-<!--            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %5p [%t] %c{1} - %m%n</pattern>-->
 
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>C:/Users/Monocept/Desktop/logs/elk-stack-%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %5p [%t] %c{1} - %m%n</pattern>
         </encoder>
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="FILE" />
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
     </root>
 </configuration>

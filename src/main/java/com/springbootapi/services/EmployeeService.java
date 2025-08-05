@@ -1,7 +1,7 @@
 package com.springbootapi.services;
 
 import com.springbootapi.entity.Employee;
-import com.springbootapi.execption.EmployeeNotFoundException;
+import com.springbootapi.exception.EmployeeNotFoundException;
 import com.springbootapi.repository.EmployeeDAO;
 import com.springbootapi.request.EmployeeDTO;
 
@@ -94,7 +94,4 @@ public class EmployeeService {
         throw new EmployeeNotFoundException("No Employee found to delete with given id !! " + id);
     }
 
-//    public boolean existById(int id) {
-//        return employeeDAO.existById(id);
-//    }
 }

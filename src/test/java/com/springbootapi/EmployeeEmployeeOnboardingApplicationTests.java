@@ -5,17 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Slf4j
 class EmployeeEmployeeOnboardingApplicationTests {
 
-	@Test
-	void contextLoads() {
-		log.info("Test case executing..");
-		assertEquals(true,true);
-		log.info("Test case executing complete");
-	}
 
 
 

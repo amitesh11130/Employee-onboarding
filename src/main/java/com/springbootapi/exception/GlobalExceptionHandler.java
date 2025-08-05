@@ -1,27 +1,27 @@
-package com.springbootapi.execption;
+package com.springbootapi.exception;
 
+import com.springbootapi.response.Meta;
 import com.springbootapi.response.ResponseDTO;
 import com.springbootapi.response.ResponseUtil;
+import com.springbootapi.response.Status;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseDTO handleValidationExceptions(MethodArgumentNotValidException ex) {
         log.error("Validation failed for request: {}", ex.getMessage(), ex);
         Map<String, String> errors = new HashMap<>();
 
@@ -30,9 +30,13 @@ public class GlobalExceptionHandler {
             String defaultMessage = fieldError.getDefaultMessage();
             errors.put(fieldName, defaultMessage);
         });
-        log.info("Validation errors: {}", errors);
-        return ResponseUtil.failed(errors.toString());
+        log.warn("Validation errors: {}", errors);
+        Meta meta = Meta.builder().code(HttpStatus.BAD_REQUEST.name()).status(Status.FAILED).description("Validation errors").build();
+        var responseDto = ResponseDTO.builder().meta(meta).data(errors).build();
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(responseDto);
+        return responseDto;
     }
+
 
     @ExceptionHandler(EmployeeNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

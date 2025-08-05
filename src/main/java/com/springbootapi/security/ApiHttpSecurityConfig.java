@@ -13,15 +13,27 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebSecurity
+@EnableWebMvc
 public class ApiHttpSecurityConfig {
 
     @Autowired
     UserDetailsService userDetailsService;
     @Autowired
     private CustomAuthenticationEntryPoint entryPoint;
+
+    private static final String[] PUBLIC_URL = {
+            "/api/v1/employee/getAll",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/webjars/**"
+
+    };
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,7 +53,7 @@ public class ApiHttpSecurityConfig {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) ->
                         auth
-                                .requestMatchers("/api/v1/employee/getAll").permitAll()
+                                .requestMatchers(PUBLIC_URL).permitAll()
                                 .requestMatchers("/api/v1/admin/save", "/api/v1/admin/saveAll", "/api/v1/admin/delete", "/api/v1/admin/updateAdmin/**")
                                 .hasRole(Role.ADMIN.name())
                                 .requestMatchers("/api/v1/admin/getAll", "/api/v1/admin/getById,/api/v1/employee/**")

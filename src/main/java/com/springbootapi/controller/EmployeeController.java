@@ -1,7 +1,7 @@
 package com.springbootapi.controller;
 
 import com.springbootapi.entity.Employee;
-import com.springbootapi.execption.EmployeeNotFoundException;
+import com.springbootapi.exception.EmployeeNotFoundException;
 import com.springbootapi.request.EmployeeDTO;
 import com.springbootapi.services.EmployeeService;
 import com.springbootapi.response.ResponseDTO;

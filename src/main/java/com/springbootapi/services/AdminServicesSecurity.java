@@ -19,9 +19,8 @@ public class AdminServicesSecurity implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String adminName) throws UsernameNotFoundException {
-        log.info("Received request to check valid admin or not with adminName: {}", adminName);
         Admin admin = adminRepository.findByAdminName(adminName);
-
+        log.info("Received request to check valid admin or not with adminName: {}", adminName);
         if (admin == null) {
             log.warn("Admin not found with given adminName: {}", adminName);
             throw new UsernameNotFoundException("Admin not found with given adminName : " + adminName);
