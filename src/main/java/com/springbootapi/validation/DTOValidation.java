@@ -23,6 +23,6 @@ public class DTOValidation {
             String rejectedValue = fieldErrors.isEmpty() ? "" : fieldErrors.get(0).getRejectedValue() != null ? Objects.requireNonNull(fieldErrors.get(0).getRejectedValue()).toString() : "";
             return new ResponseDTOError(defaultMessage, objectName, field, rejectedValue);
         }
-        return new ResponseDTOError("Validation passed", "", "", "");
+        return new ResponseDTOError("Validation passed", " ", "", "");
     }
 }
